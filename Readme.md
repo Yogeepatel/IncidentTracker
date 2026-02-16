@@ -245,7 +245,117 @@ PATCH /api/incidents/{id}
 * Dark mode UI
 ---
 
+## HLD
+
+┌──────────────────────────────────────────┐
+│                Frontend (React)          │
+│------------------------------------------│
+│ Incident List Page                       │
+│ Create Incident Page                     │
+│ Incident Detail Page                     │
+│ Filters / Sorting / Pagination           │
+└──────────────────────┬───────────────────┘
+                       │ REST API (HTTP/JSON)
+                       ▼
+┌──────────────────────────────────────────┐
+│            Backend (Spring Boot)         │
+│------------------------------------------│
+│ Controller Layer (REST endpoints)        │
+│ Service Layer (business logic)           │
+│ Repository Layer (JPA/Hibernate)         │
+│ Validation & Exception Handling          │
+└──────────────────────┬───────────────────┘
+                       │
+                       ▼
+┌──────────────────────────────────────────┐
+│                Database                  │
+│------------------------------------------│
+│ Incident Table                           │
+└──────────────────────────────────────────┘
+
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/fd8878f5-66ee-4ae9-bae6-4e320e9cc161" />
+
+
+## LLD
+
+Incident Tracker - LLD 
+======================================
+
++-------------------------- Controller Layer ---------------------------+
+|                                                                       |
+|  +-------------------------+         +-----------------------------+  |
+|  | IncidentController      |         | SeedDataController          |  |
+|  |-------------------------|         |-----------------------------|  |
+|  | + getIncidentDetails()  |         | + seedRandomData()          |  |
+|  | + getIncidents()        |         +-------------+---------------+  |
+|  | + createIncident()      |                       |                  |
+|  | + updateIncident()      |                       | calls            |
+|  +------------+------------+                       v                  |
+|               | calls                       +--------------------+    |
++---------------|-----------------------------| SeedDataService    |----+
+                |                             |--------------------|
+                |                             | + addRandomData... |
+                |                             |   (@Async, void)   |
+                |                             +---------+----------+
+                v                                       |
+      +--------------------------+                       | uses
+      | IncidentService          |                       v
+      |--------------------------|              +---------------------+
+      | + createIncident()       |              | IncidentRepository  |
+      | + updateIncident()       |              |---------------------|
+      | + getIncidentDetails()   |              | JpaRepository       |
+      | + getIncidents(...)      |--------------| JpaSpecExecutor     |
+      +------------+-------------+     uses     +----------+----------+
+                   |                                    persists
+                   v                                          |
+      +--------------------------- Entity Layer --------------v--------+
+      | +-----------------------------------------------------------+ |
+      | | Incident                                                  | |
+      | |-----------------------------------------------------------| |
+      | | id: UUID                                                  | |
+      | | title: String                                             | |
+      | | service: Service (EnumType.STRING)                        | |
+      | | severity: Severity (EnumType.STRING)                      | |
+      | | status: Status (EnumType.STRING)                          | |
+      | | owner: String                                             | |
+      | | summary: String                                           | |
+      | | createdAt, updatedAt: Timestamp                           | |
+      | +-------------------------+---------------------------------+ |
+      |                           |                                   |
+      |         +-----------------+------------------+                |
+      |         |                                    |                |
+      |   +-----v------+   +--------v-------+   +----v-----------+    | 
+      |   | Service    |   | Severity       |   | Status         |    |
+      |   |------------|   |----------------|   |----------------|    |
+      |   | BACKEND... |   | SEV1..SEV4     |   | OPEN...RESOLVED|    |
+      |   +------------+   +----------------+   +----------------+    |
+      +---------------------------------------------------------------+
+
+
++----------------------- Cross-Cutting Layer --------------------------+
+| +---------------------------------------------------------------+    |
+| | GlobalExceptionHandler (@RestControllerAdvice)                |    |
+| |---------------------------------------------------------------|    |
+| | handles IncidentException -> status/message                   |    |
+| | handles MethodArgumentNotValidException -> 400                |    |
+| | handles Exception -> 500                                      |    |
+| +-----------------------------+---------------------------------+    |
+|                               |                                      |
+|                               v                                      |
+|                    +------------------------+                        |
+|                    | IncidentException      |                        |
+|                    |------------------------|                        |
+|                    | RuntimeException       |                        |
+|                    | + HttpStatus status    |                        |
+|                    +------------------------+                        |
++---------------------------------------------------------------------+
+
+
+
+
 <img width="956" height="437" alt="image" src="https://github.com/user-attachments/assets/bf6af00e-c8d2-4ff7-ab40-b6a3e1fa5d53" />
+<img width="331" height="355" alt="image" src="https://github.com/user-attachments/assets/a8f5e45c-ed9e-414d-b84c-d3eff864172c" />
+<img width="958" height="431" alt="image" src="https://github.com/user-attachments/assets/b575a084-b0cb-4c31-998a-cee9e5def12b" />
 
 
 ## Author
