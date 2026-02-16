@@ -244,7 +244,10 @@ PATCH /api/incidents/{id}
 * Unit & integration tests
 * Dark mode UI
 
+
+
 ---
+
 
 ## Author
 
