@@ -1,4 +1,4 @@
-# Incident Tracker Mini App
+<img width="956" height="437" alt="image" src="https://github.com/user-attachments/assets/7691061d-b7c7-4684-a758-1d091c5ad521" /># Incident Tracker Mini App
 
 A full-stack web application to create, browse, search and manage production incidents.
 
@@ -243,10 +243,9 @@ PATCH /api/incidents/{id}
 * Docker deployment
 * Unit & integration tests
 * Dark mode UI
-
-
-
 ---
+
+<img width="956" height="437" alt="image" src="https://github.com/user-attachments/assets/bf6af00e-c8d2-4ff7-ab40-b6a3e1fa5d53" />
 
 
 ## Author
