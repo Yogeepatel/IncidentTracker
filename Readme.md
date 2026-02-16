@@ -65,8 +65,8 @@ Update credentials:
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/incident_tracker?useSSL=false
-    username: root
-    password: 
+    username: {your username}
+    password: {your password}
 ```
 
 ### 3. Run Backend
