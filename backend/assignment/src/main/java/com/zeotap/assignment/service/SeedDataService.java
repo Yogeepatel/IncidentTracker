@@ -22,7 +22,8 @@ public class SeedDataService {
 		Severity[] severity = Severity.values();
 		Status[] status = Status.values();
 		com.zeotap.assignment.repository.model.Service[] service = com.zeotap.assignment.repository.model.Service.values();
-		for(int i = 0; i < 200;i++){
+		int start = new Random().nextInt(100000);
+		for(int i = start; i < start+200;i++){
 			Incident incident = new Incident();
 			incident.setSeverity(severity[new Random().nextInt(severity.length)]);
 			incident.setTitle("Title - Random Incident - " + i);

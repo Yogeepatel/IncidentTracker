@@ -24,7 +24,7 @@ export default function IncidentList() {
 
   const [searchInput, setSearchInput] = useState(searchParams.get("search") || "");
   const [search, setSearch] = useState(searchParams.get("search") || "");
-  
+
 
   const [sortField, setSortField] = useState("createdAt");
   const [sortDir, setSortDir] = useState("desc");
@@ -79,7 +79,7 @@ export default function IncidentList() {
 
   /* ---------------- SINGLE API EFFECT ---------------- */
 
-  const [applyKey,setApplyKey]=useState(0);
+  const [applyKey, setApplyKey] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -110,7 +110,7 @@ export default function IncidentList() {
   /* ---------------- URL SYNC ---------------- */
 
   useEffect(() => {
-     if (location.pathname !== "/") return;
+    if (location.pathname !== "/") return;
     const params = {};
     if (page) params.page = page;
     if (search) params.search = search;
@@ -204,30 +204,30 @@ export default function IncidentList() {
           </div>
 
           {/* SEARCH */}
-          <div className="search-area" style={{flex:1,minWidth:200,display:"flex",alignItems:"center"}}>
-  <input
-    style={{flex:1,padding:"8px 12px",boxSizing:"border-box"}}
-    placeholder="Search incidents..."
-    value={searchInput}
-    onChange={(e) => setSearchInput(e.target.value)}
-  />
+          <div className="search-area" style={{ flex: 1, minWidth: 200, display: "flex", alignItems: "center" }}>
+            <input
+              style={{ flex: 1, padding: "8px 12px", boxSizing: "border-box" }}
+              placeholder="Search incidents..."
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
 
-  <button
-    style={{
-      padding:"8px 16px",
-      marginLeft:16,
-      whiteSpace:"nowrap",
-      backgroundColor:"#d32f2f",
-      color:"white",
-      border:"none",
-      borderRadius:4,
-      cursor:"pointer"
-    }}
-    onClick={()=>{setPage(0);setApplyKey(k=>k+1);}}
-  >
-    Filter
-  </button>
-</div>
+            <button
+              style={{
+                padding: "8px 16px",
+                marginLeft: 16,
+                whiteSpace: "nowrap",
+                backgroundColor: "#d32f2f",
+                color: "white",
+                border: "none",
+                borderRadius: 4,
+                cursor: "pointer"
+              }}
+              onClick={() => { setPage(0); setApplyKey(k => k + 1); }}
+            >
+              Filter
+            </button>
+          </div>
 
         </div>
       </div>
@@ -279,7 +279,7 @@ export default function IncidentList() {
             {!loading && data.length === 0 && (
               <tr>
                 <td colSpan="5">
-                  <div style={{minHeight:"60vh",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"18px",fontWeight:500}} className="no-data">
+                  <div style={{ minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px", fontWeight: 500 }} className="no-data">
                     No incidents found
                   </div>
                 </td>
@@ -291,7 +291,11 @@ export default function IncidentList() {
                 onClick={() => navigate("/incidentDetails", { state: i })}>
                 <td>{i.title}</td>
                 <td>{i.service}</td>
-                <td><span className={`status-badge ${i.status.toLowerCase()}`}>{i.status}</span></td>
+                <td>
+                  <span className={`status-badge ${(i.status || "").toLowerCase()}`}>
+                    {i.status || "-"}
+                  </span>
+                </td>
                 <td>{new Date(i.createdAt).toLocaleString()}</td>
                 <td>{i.owner || "-"}</td>
               </tr>
@@ -309,11 +313,11 @@ export default function IncidentList() {
       {/* PAGINATION */}
       {totalPages > 1 && (
         <div className="pagination">
-          <button disabled={page===0} onClick={()=>setPage(page-1)}>Prev</button>
-          {[...Array(totalPages).keys()].map(p=>(
-            <button key={p} className={p===page?"active":""} onClick={()=>setPage(p)}>{p+1}</button>
+          <button disabled={page === 0} onClick={() => setPage(page - 1)}>Prev</button>
+          {[...Array(totalPages).keys()].map(p => (
+            <button key={p} className={p === page ? "active" : ""} onClick={() => setPage(p)}>{p + 1}</button>
           ))}
-          <button disabled={page===totalPages-1} onClick={()=>setPage(page+1)}>Next</button>
+          <button disabled={page === totalPages - 1} onClick={() => setPage(page + 1)}>Next</button>
         </div>
       )}
 
