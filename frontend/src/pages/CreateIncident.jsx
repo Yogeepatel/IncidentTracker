@@ -44,6 +44,7 @@ export default function CreateIncident() {
     form.service &&
     form.severity &&
     form.status;
+  const isDirty = JSON.stringify(form) !== JSON.stringify(initialState);
 
   const handleChange = (field, value) => {
     setForm(prev => ({ ...prev, [field]: value }));
@@ -163,7 +164,9 @@ export default function CreateIncident() {
           placeholder="Responsible engineer (optional)"
           onChange={e => handleChange("owner", e.target.value)}
         />
-        {errors.owner && <span className="error">{errors.owner}</span>}
+        {isDirty && ownerError && (
+          <span id="email-invalid-error" className="error">{ownerError}</span>
+        )}
 
         {/* SUMMARY */}
         <label>Summary</label>
